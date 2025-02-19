@@ -21,9 +21,9 @@ from typing import Union, List, Optional
 
 from preprocess.document_parser import DocumentParser
 from preprocess.chunker import TextChunker
-from embeddings.embedding_engine import EmbeddingEngine
-from classification.directive_classifier import DirectiveClassifier
-from sanitization.context_stripper import ContextStripper
+from embeddings.embedding_engine import EmbeddingEngine, EmbeddingConfig
+from classification.directive_classifier import DirectiveClassifier, ClassifierConfig
+from sanitization.context_stripper import ContextStripper, StripperConfig
 from config import load_config, SafeContextConfig
 
 # Configure logging
