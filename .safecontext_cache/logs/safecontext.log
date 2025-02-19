@@ -1,0 +1,4 @@
+2025-02-19 18:24:07,140 - __main__ - INFO - Pipeline initialized
+2025-02-19 18:24:07,140 - __main__ - WARNING - Directive confidence score is high
+2025-02-19 18:24:07,140 - __main__ - ERROR - Failed to classify text chunk
+2025-02-19 18:24:07,140 - __main__ - INFO - Decision: Sanitized text | Details: Removed directive elements from chunk 42

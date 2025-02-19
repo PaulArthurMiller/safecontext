@@ -10,6 +10,10 @@ from dataclasses import dataclass
 from typing import List, Optional, Iterator
 import spacy
 from ..config import config
+from utils.logger import SafeContextLogger
+
+# Configure logging
+logger = SafeContextLogger(__name__)
 
 @dataclass
 class TextChunk:

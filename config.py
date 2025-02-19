@@ -11,7 +11,7 @@ import os
 import json
 from pathlib import Path
 from typing import Dict, Any, Optional
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 @dataclass
 class ModelConfig:
@@ -37,10 +37,9 @@ class PreprocessConfig:
 
 @dataclass
 class SafeContextConfig:
-    """Main configuration class for SafeContext library."""
-    model: ModelConfig = ModelConfig()
-    classification: ClassificationConfig = ClassificationConfig()
-    preprocess: PreprocessConfig = PreprocessConfig()
+    model: ModelConfig = field(default_factory=ModelConfig)
+    classification: ClassificationConfig = field(default_factory=ClassificationConfig)
+    preprocess: PreprocessConfig = field(default_factory=PreprocessConfig)
     log_level: str = "INFO"
     enable_cache: bool = True
     cache_dir: str = ".safecontext_cache"

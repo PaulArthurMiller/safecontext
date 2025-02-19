@@ -21,14 +21,13 @@ import numpy as np
 from dataclasses import dataclass
 from typing import List, Optional, Union, Tuple
 from enum import Enum
-import logging
+from utils.logger import SafeContextLogger
 from sklearn.metrics.pairwise import cosine_similarity
 from pathlib import Path
 import json
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = SafeContextLogger(__name__)
 
 class Label(str, Enum):
     """Classification labels for text chunks."""

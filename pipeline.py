@@ -15,7 +15,6 @@ Example usage:
     safe_text = pipeline.process_input("input.pdf")
 """
 
-import logging
 from pathlib import Path
 from typing import Union, List, Optional
 
@@ -25,10 +24,10 @@ from embeddings.embedding_engine import EmbeddingEngine, EmbeddingConfig
 from classification.directive_classifier import DirectiveClassifier, ClassifierConfig
 from sanitization.context_stripper import ContextStripper, StripperConfig
 from config import load_config, SafeContextConfig
+from utils.logger import SafeContextLogger
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = SafeContextLogger(__name__)
 
 class SafeContextPipeline:
     """
@@ -64,17 +63,16 @@ class SafeContextPipeline:
         
         # Initialize classifier with proper config
         classifier_config = ClassifierConfig(
-            confidence_threshold=self.config.classification.confidence_threshold,
-            max_context_length=self.config.classification.max_context_length,
-            min_directive_length=self.config.classification.min_directive_length
+            similarity_threshold=self.config.classification.confidence_threshold
         )
         self.classifier = DirectiveClassifier(
             config=classifier_config,
-            embedding_dim=768  # Standard dimension for most embedding models
+            embedding_dim=768  # Required for similarity classification
         )
         
         # Initialize context stripper with proper config
-        self.stripper = ContextStripper()  # Uses default config
+        stripper_config = StripperConfig()
+        self.stripper = ContextStripper(config=stripper_config)
         
         logger.info("SafeContext pipeline initialized successfully")
     
@@ -94,7 +92,7 @@ class SafeContextPipeline:
         """
         try:
             # Convert input to Path if string looks like a file path
-            if isinstance(input_data, str) and "/" in input_data or "\\" in input_data:
+            if isinstance(input_data, str) and ("/" in input_data or "\\" in input_data):
                 input_data = Path(input_data)
             
             # Stage 1: Parse input
@@ -106,25 +104,21 @@ class SafeContextPipeline:
             
             # Stage 2: Split into chunks
             logger.info("Chunking text")
-            chunks = self.chunker.chunk_text(text)  # Correct method name
+            chunks = self.chunker.chunk_text(text)
             chunk_texts = [chunk.text for chunk in chunks]
             
             # Stage 3: Generate embeddings
             logger.info("Generating embeddings")
-            embeddings = self.embedding_engine.get_embeddings(chunk_texts)  # Correct method name
+            embeddings = self.embedding_engine.get_embeddings(chunk_texts)
             
             # Stage 4: Classify chunks
             logger.info("Classifying chunks")
-            classifications = [
-                self.classifier.classify_chunk(embedding)
-                for embedding in embeddings
-            ]
+            classifications = self.classifier.classify_chunks(embeddings)
             
             # Stage 5: Sanitize based on classification
             logger.info("Sanitizing content")
             sanitized_chunks = []
             for chunk, classification in zip(chunk_texts, classifications):
-                # Extract directive_score from classification result
                 directive_score = classification.confidence if classification.label == "directive" else 0.0
                 sanitized_chunks.append(self.stripper.sanitize(chunk, directive_score))
             

@@ -6,6 +6,10 @@ while preserving factual content.
 from dataclasses import dataclass
 from typing import List, Union, Optional, Sequence
 import re
+from utils.logger import SafeContextLogger
+
+# Configure logging
+logger = SafeContextLogger(__name__)
 
 @dataclass
 class StripperConfig:

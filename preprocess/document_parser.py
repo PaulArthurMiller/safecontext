@@ -13,6 +13,10 @@ from bs4 import BeautifulSoup
 import PyPDF2
 from docx import Document
 from ..config import config
+from utils.logger import SafeContextLogger
+
+# Configure logging
+logger = SafeContextLogger(__name__)
 
 class UnsupportedFormatError(Exception):
     """Raised when attempting to parse an unsupported file format."""

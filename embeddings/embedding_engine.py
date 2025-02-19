@@ -26,12 +26,11 @@ from sentence_transformers import SentenceTransformer
 import torch
 from pathlib import Path
 import json
-import logging
+from utils.logger import SafeContextLogger
 from functools import lru_cache
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = SafeContextLogger(__name__)
 
 @dataclass
 class EmbeddingConfig:
