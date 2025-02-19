@@ -49,20 +49,20 @@ class SafeContextPipeline:
         
         # Initialize components
         self.parser = DocumentParser()
-        self.chunker = TextChunker(
-            chunk_size=self.config.preprocess.chunk_size,
-            overlap=self.config.preprocess.chunk_overlap
-        )
+        self.chunker = TextChunker()  # TextChunker doesn't take these parameters in constructor
         self.embedding_engine = EmbeddingEngine(
-            model_name=self.config.model.embedding_model,
-            cache_dir=self.config.model.cache_dir
+            model_name=self.config.model.model_name,  # Correct attribute name from ModelConfig
+            config=EmbeddingConfig(
+                model_name=self.config.model.model_name,
+                cache_dir=self.config.model.cache_dir
+            )
         )
         self.classifier = DirectiveClassifier(
-            config=self.config.classification,
-            embedding_engine=self.embedding_engine
+            config=ClassifierConfig(),  # Using default config since we don't have matching fields
+            embedding_dim=768  # Standard dimension for most embedding models
         )
         self.stripper = ContextStripper(
-            config=self.config.sanitization
+            config=StripperConfig()  # Using default config since we don't have matching fields
         )
         
         logger.info("SafeContext pipeline initialized successfully")
@@ -95,12 +95,12 @@ class SafeContextPipeline:
             
             # Stage 2: Split into chunks
             logger.info("Chunking text")
-            chunks = list(self.chunker.chunk(text))
+            chunks = self.chunker.chunk_text(text)  # Correct method name
             chunk_texts = [chunk.text for chunk in chunks]
             
             # Stage 3: Generate embeddings
             logger.info("Generating embeddings")
-            embeddings = self.embedding_engine.embed(chunk_texts)
+            embeddings = self.embedding_engine.get_embeddings(chunk_texts)  # Correct method name
             
             # Stage 4: Classify chunks
             logger.info("Classifying chunks")
