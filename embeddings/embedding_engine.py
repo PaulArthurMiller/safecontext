@@ -175,6 +175,7 @@ class EmbeddingEngine:
         Raises:
             ModelAPIError: If API calls fail after max retries
         """
+        last_error = None
         for attempt in range(self.config.max_retries):
             try:
                 response = openai.embeddings.create(
@@ -184,9 +185,12 @@ class EmbeddingEngine:
                 )
                 return np.array([emb.embedding for emb in response.data])
             except Exception as e:
-                if attempt == self.config.max_retries - 1:
-                    raise ModelAPIError(f"OpenAI API error after {self.config.max_retries} attempts: {str(e)}")
-                logger.warning(f"Retry {attempt + 1}/{self.config.max_retries} after error: {str(e)}")
+                last_error = e
+                if attempt < self.config.max_retries - 1:
+                    logger.warning(f"Retry {attempt + 1}/{self.config.max_retries} after error: {str(e)}")
+                    continue
+        
+        raise ModelAPIError(f"OpenAI API error after {self.config.max_retries} attempts: {str(last_error)}")
     
     def _get_sbert_embeddings(self, texts: List[str]) -> np.ndarray:
         """Get embeddings using Sentence-BERT."""
