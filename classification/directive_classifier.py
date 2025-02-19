@@ -115,6 +115,8 @@ class DirectiveClassifier:
             self._load_reference_embeddings()
         else:
             # Initialize with zero vectors - should be replaced with actual embeddings
+            if self.config.reference_directives is None:
+                raise ValueError("reference_directives cannot be None")
             self.reference_embeddings = np.zeros((len(self.config.reference_directives), embedding_dim))
             logger.warning("Using zero vectors for reference embeddings - replace with actual embeddings")
     
