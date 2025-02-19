@@ -89,8 +89,6 @@ class DirectiveClassifier:
         config: Optional[ClassifierConfig] = None,
         embedding_dim: Optional[int] = None
     ):
-        self.config: ClassifierConfig
-        self.reference_embeddings: np.ndarray
         """
         Initialize the classifier.
         
@@ -98,7 +96,10 @@ class DirectiveClassifier:
             config: Optional configuration object
             embedding_dim: Dimension of input embeddings (required for similarity approach)
         """
-        self.config = config or ClassifierConfig()
+        self.config: ClassifierConfig
+        self.reference_embeddings: np.ndarray
+        self.config: ClassifierConfig = config or ClassifierConfig()
+        self.reference_embeddings: np.ndarray = np.array([])  # Initialize empty
         
         if self.config.model_type == "similarity":
             if embedding_dim is None:
