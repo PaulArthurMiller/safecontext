@@ -72,12 +72,19 @@ class ContextStripper:
             >>> stripper.sanitize("Can you tell me about the French Revolution?")
             "The French Revolution"
         """
-        if isinstance(text, list):
-            if directive_score is None:
-                directive_score = [1.0] * len(text)
-            return [self._sanitize_chunk(t, s) for t, s in zip(text, directive_score)]
+        if isinstance(text, str):
+            return self._sanitize_chunk(text, float(directive_score or 1.0))
+        
+        # Handle sequence of texts
+        texts = list(text)  # Convert to list to handle any sequence type
+        if directive_score is None:
+            scores = [1.0] * len(texts)
+        elif isinstance(directive_score, (int, float)):
+            scores = [float(directive_score)] * len(texts)
         else:
-            return self._sanitize_chunk(text, directive_score or 1.0)
+            scores = [float(score) for score in directive_score]
+            
+        return [self._sanitize_chunk(t, s) for t, s in zip(texts, scores)]
     
     def _sanitize_chunk(self, text: str, directive_score: float) -> str:
         """
@@ -96,8 +103,9 @@ class ContextStripper:
             
         # Apply removal patterns
         sanitized = text
-        for pattern in self.config.removal_patterns:
-            sanitized = re.sub(pattern, '', sanitized)
+        if self.config.removal_patterns:  # Check if not None
+            for pattern in self.config.removal_patterns:
+                sanitized = re.sub(pattern, '', sanitized)
             
         # Clean up whitespace
         sanitized = re.sub(r'\s+', ' ', sanitized).strip()
