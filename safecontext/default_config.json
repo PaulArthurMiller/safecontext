@@ -1,0 +1,21 @@
+{
+    "model": {
+        "model_name": "text-embedding-ada-002",
+        "max_tokens": 8191,
+        "batch_size": 100,
+        "cache_dir": "embeddings"
+    },
+    "classification": {
+        "confidence_threshold": 0.85,
+        "max_context_length": 1000,
+        "min_directive_length": 10
+    },
+    "preprocess": {
+        "chunk_size": 500,
+        "chunk_overlap": 50,
+        "supported_formats": ["txt", "pdf", "docx", "md"]
+    },
+    "log_level": "INFO",
+    "enable_cache": true,
+    "cache_dir": ".safecontext_cache"
+}
