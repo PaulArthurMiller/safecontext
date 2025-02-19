@@ -49,21 +49,32 @@ class SafeContextPipeline:
         
         # Initialize components
         self.parser = DocumentParser()
-        self.chunker = TextChunker()  # TextChunker doesn't take these parameters in constructor
+        self.chunker = TextChunker()
+        
+        # Initialize embedding engine with proper config
+        embedding_config = EmbeddingConfig(
+            model_name=self.config.model.model_name,
+            batch_size=self.config.model.batch_size,
+            cache_dir=self.config.model.cache_dir
+        )
         self.embedding_engine = EmbeddingEngine(
-            model_name=self.config.model.model_name,  # Correct attribute name from ModelConfig
-            config=EmbeddingConfig(
-                model_name=self.config.model.model_name,
-                cache_dir=self.config.model.cache_dir
-            )
+            model_name=self.config.model.model_name,
+            config=embedding_config
+        )
+        
+        # Initialize classifier with proper config
+        classifier_config = ClassifierConfig(
+            confidence_threshold=self.config.classification.confidence_threshold,
+            max_context_length=self.config.classification.max_context_length,
+            min_directive_length=self.config.classification.min_directive_length
         )
         self.classifier = DirectiveClassifier(
-            config=ClassifierConfig(),  # Using default config since we don't have matching fields
+            config=classifier_config,
             embedding_dim=768  # Standard dimension for most embedding models
         )
-        self.stripper = ContextStripper(
-            config=StripperConfig()  # Using default config since we don't have matching fields
-        )
+        
+        # Initialize context stripper with proper config
+        self.stripper = ContextStripper()  # Uses default config
         
         logger.info("SafeContext pipeline initialized successfully")
     
@@ -111,10 +122,11 @@ class SafeContextPipeline:
             
             # Stage 5: Sanitize based on classification
             logger.info("Sanitizing content")
-            sanitized_chunks = [
-                self.stripper.sanitize(chunk, score.directive_score)
-                for chunk, score in zip(chunk_texts, classifications)
-            ]
+            sanitized_chunks = []
+            for chunk, classification in zip(chunk_texts, classifications):
+                # Extract directive_score from classification result
+                directive_score = classification.confidence if classification.label == "directive" else 0.0
+                sanitized_chunks.append(self.stripper.sanitize(chunk, directive_score))
             
             # Combine chunks
             result = " ".join(sanitized_chunks)
