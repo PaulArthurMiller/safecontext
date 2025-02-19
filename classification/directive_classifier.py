@@ -228,9 +228,10 @@ class DirectiveClassifier:
         """
         self.reference_embeddings = embeddings
         
-        if save and self.config.reference_embeddings_path:
+        if save and self.config.reference_embeddings_path is not None:
             try:
-                with open(self.config.reference_embeddings_path, 'w') as f:
+                path = Path(self.config.reference_embeddings_path)
+                with path.open('w') as f:
                     json.dump({'embeddings': embeddings.tolist()}, f)
                 logger.info("Saved updated reference embeddings")
             except Exception as e:
