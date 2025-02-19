@@ -23,11 +23,12 @@ class StripperConfig:
     def __post_init__(self):
         if self.removal_patterns is None:
             self.removal_patterns = [
-                r"(?i)please\s+(?:help|assist|provide|tell)",
-                r"(?i)can\s+you\s+(?:help|tell|explain|provide)",
-                r"(?i)i\s+need\s+(?:help|assistance|you\s+to)",
-                r"(?i)write\s+(?:a|an|the)",
-                r"(?i)give\s+me\s+(?:a|an|the)",
+                r"(?i)please\s+(?:help|assist|provide|tell|explain)\s*",
+                r"(?i)can\s+you\s+(?:help|tell|explain|provide)\s+(?:me\s+)?(?:about\s+)?",
+                r"(?i)i\s+need\s+(?:help|assistance|you\s+to)\s*",
+                r"(?i)write\s+(?:a|an|the)\s*",
+                r"(?i)give\s+me\s+(?:a|an|the)\s*",
+                r"(?i)tell\s+(?:me\s+)?(?:about\s+)?",
             ]
 
 class ContextStripper:
@@ -126,6 +127,10 @@ class ContextStripper:
     
     def _handle_partial_directive(self, text: str) -> str:
         """Special handling for text that's only partially directive."""
-        # Preserve more of the original structure for partially directive text
-        # but still remove clear instruction elements
-        return text
+        # For partially directive text, still remove common directive phrases
+        for pattern in [
+            r"(?i)please\s+(?:help|assist|provide|tell|explain)\s*",
+            r"(?i)tell\s+(?:me\s+)?(?:about\s+)?",
+        ]:
+            text = re.sub(pattern, '', text)
+        return text.strip()
