@@ -42,6 +42,7 @@ class EmbeddingConfig:
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
     max_retries: int = 3
     timeout: int = 30
+    max_cache_size: int = 10000  # Maximum number of entries in cache
 
 class EmbeddingError(Exception):
     """Base exception for embedding-related errors."""
@@ -113,6 +114,23 @@ class EmbeddingEngine:
             
         Raises:
             ModelAPIError: If there's an error getting embeddings
+            ValueError: If texts list is empty or contains empty strings
+        """
+        if not texts:
+            raise ValueError("Input texts list cannot be empty")
+        if any(not isinstance(t, str) or not t.strip() for t in texts):
+            raise ValueError("All inputs must be non-empty strings")
+        """
+        Get embeddings for a list of texts.
+        
+        Args:
+            texts: List of text strings to embed
+            
+        Returns:
+            numpy.ndarray: Array of embeddings, shape (n_texts, embedding_dim)
+            
+        Raises:
+            ModelAPIError: If there's an error getting embeddings
         """
         try:
             # Check cache first if enabled
@@ -139,8 +157,36 @@ class EmbeddingEngine:
         except Exception as e:
             raise ModelAPIError(f"Error generating embeddings: {str(e)}")
     
+    def __del__(self):
+        """Cleanup when the object is destroyed."""
+        # Clean up OpenAI client if it was used
+        if hasattr(self, '_get_embeddings') and self._get_embeddings == self._get_openai_embeddings:
+            openai.api_key = None
+
+    def clear_cache(self):
+        """Clear the embedding cache if it exists."""
+        if self.config.cache_dir:
+            cache_file = Path(self.config.cache_dir) / f"{self.config.model_name}_cache.json"
+            if cache_file.exists():
+                try:
+                    cache_file.unlink()
+                    logger.info("Cache cleared successfully")
+                except Exception as e:
+                    logger.warning(f"Error clearing cache: {str(e)}")
+
     def _get_openai_embeddings(self, texts: List[str]) -> np.ndarray:
-        """Get embeddings using OpenAI API."""
+        """
+        Get embeddings using OpenAI API.
+        
+        Args:
+            texts: List of text strings to embed
+            
+        Returns:
+            numpy.ndarray: Array of embeddings
+            
+        Raises:
+            ModelAPIError: If API calls fail after max retries
+        """
         for attempt in range(self.config.max_retries):
             try:
                 response = openai.embeddings.create(
@@ -183,10 +229,21 @@ class EmbeddingEngine:
             
             # Check if all texts are in cache
             embeddings = []
+            first_embedding = None
+            
             for text in texts:
                 if text not in cache:
                     return None
-                embeddings.append(cache[text])
+                embedding = cache[text]
+                
+                # Validate embedding dimensions
+                if first_embedding is None:
+                    first_embedding = embedding
+                elif len(embedding) != len(first_embedding):
+                    logger.error("Inconsistent embedding dimensions in cache")
+                    return None
+                    
+                embeddings.append(embedding)
             
             return np.array(embeddings)
         except Exception as e:
@@ -206,9 +263,14 @@ class EmbeddingEngine:
                 with open(cache_file, 'r') as f:
                     cache = json.load(f)
             
-            # Update cache with new embeddings
+            # Update cache with new embeddings, respecting size limit
             for text, embedding in zip(texts, embeddings):
                 cache[text] = embedding.tolist()
+                
+            # Remove oldest entries if cache exceeds size limit
+            if len(cache) > self.config.max_cache_size:
+                items = list(cache.items())
+                cache = dict(items[-self.config.max_cache_size:])
             
             # Save updated cache
             with open(cache_file, 'w') as f:
