@@ -129,8 +129,11 @@ class DirectiveClassifier:
     
     def _load_reference_embeddings(self):
         """Load reference embeddings from file."""
+        if self.config.reference_embeddings_path is None:
+            raise ValueError("reference_embeddings_path cannot be None")
         try:
-            with open(self.config.reference_embeddings_path, 'r') as f:
+            path = Path(self.config.reference_embeddings_path)
+            with path.open('r') as f:
                 data = json.load(f)
             self.reference_embeddings = np.array(data['embeddings'])
         except Exception as e:
