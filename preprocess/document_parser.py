@@ -54,7 +54,7 @@ class DocumentParser:
                 return self._parse_file(input_path)
             else:
                 # Treat as raw string if not a valid file path
-                return self._clean_text(input_source)
+                return self._clean_text(str(input_source))
         return self._clean_text(str(input_source))
 
     def _parse_file(self, file_path: Path) -> str:
