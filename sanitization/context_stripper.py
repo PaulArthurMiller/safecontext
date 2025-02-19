@@ -73,7 +73,8 @@ class ContextStripper:
             "The French Revolution"
         """
         if isinstance(text, str):
-            return self._sanitize_chunk(text, float(directive_score or 1.0))
+            score = directive_score if isinstance(directive_score, (int, float)) else 1.0
+            return self._sanitize_chunk(text, float(score))
         
         # Handle sequence of texts
         texts = list(text)  # Convert to list to handle any sequence type
