@@ -4,7 +4,7 @@ while preserving factual content.
 """
 
 from dataclasses import dataclass
-from typing import List, Union, Optional
+from typing import List, Union, Optional, Sequence
 import re
 
 @dataclass
@@ -18,7 +18,7 @@ class StripperConfig:
     preserve_questions: bool = True
     
     # List of patterns to always remove
-    removal_patterns: List[str] = None
+    removal_patterns: Optional[List[str]] = None
     
     def __post_init__(self):
         if self.removal_patterns is None:
@@ -53,8 +53,8 @@ class ContextStripper:
         self.config = config or StripperConfig()
     
     def sanitize(self, 
-                text: Union[str, List[str]], 
-                directive_score: Optional[Union[float, List[float]]] = None) -> Union[str, List[str]]:
+                text: Union[str, Sequence[str]], 
+                directive_score: Optional[Union[float, Sequence[float]]] = None) -> Union[str, List[str]]:
         """
         Sanitize text by removing directive elements while preserving factual content.
         
