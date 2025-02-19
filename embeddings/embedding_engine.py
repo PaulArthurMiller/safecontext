@@ -88,12 +88,14 @@ class EmbeddingEngine:
             openai.api_key = api_key or os.getenv("OPENAI_API_KEY")
             if not openai.api_key:
                 raise ValueError("OpenAI API key must be provided or set in OPENAI_API_KEY environment variable")
-            self.model = None
             self._get_embeddings = self._get_openai_embeddings
+            self.model = None  # OpenAI doesn't need a local model
         else:
             # Load local Sentence-BERT model
             try:
                 self.model = SentenceTransformer(model_name, device=self.config.device)
+                if self.model is None:
+                    raise ModelAPIError("Failed to initialize Sentence-BERT model")
                 self._get_embeddings = self._get_sbert_embeddings
             except Exception as e:
                 raise ModelAPIError(f"Failed to load Sentence-BERT model: {str(e)}")
