@@ -197,6 +197,8 @@ class EmbeddingEngine:
     def _get_sbert_embeddings(self, texts: List[str]) -> np.ndarray:
         """Get embeddings using Sentence-BERT."""
         try:
+            if self.model is None:
+                raise ModelAPIError("Sentence-BERT model not initialized")
             with torch.no_grad():
                 embeddings = self.model.encode(
                     texts,
