@@ -120,18 +120,6 @@ class EmbeddingEngine:
             raise ValueError("Input texts list cannot be empty")
         if any(not isinstance(t, str) or not t.strip() for t in texts):
             raise ValueError("All inputs must be non-empty strings")
-        """
-        Get embeddings for a list of texts.
-        
-        Args:
-            texts: List of text strings to embed
-            
-        Returns:
-            numpy.ndarray: Array of embeddings, shape (n_texts, embedding_dim)
-            
-        Raises:
-            ModelAPIError: If there's an error getting embeddings
-        """
         try:
             # Check cache first if enabled
             if self.config.cache_dir:

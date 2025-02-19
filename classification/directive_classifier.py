@@ -51,7 +51,7 @@ class ClassifierConfig:
     ml_model_path: Optional[str] = None
     
     # Example directive patterns for similarity-based classification
-    reference_directives: List[str] = None
+    reference_directives: Optional[List[str]] = None
     
     def __post_init__(self):
         """Initialize default reference directives if none provided."""
@@ -89,6 +89,8 @@ class DirectiveClassifier:
         config: Optional[ClassifierConfig] = None,
         embedding_dim: Optional[int] = None
     ):
+        self.config: ClassifierConfig
+        self.reference_embeddings: np.ndarray
         """
         Initialize the classifier.
         
@@ -193,10 +195,14 @@ class DirectiveClassifier:
             label = Label.CONTENT
             confidence = 1 - max_similarity
         
+        features = {"max_similarity": float(max_similarity)}
+        if extra_features:
+            features.update(extra_features)
+            
         return ClassificationResult(
             label=label,
             confidence=float(confidence),
-            features={"max_similarity": float(max_similarity), **extra_features} if extra_features else None
+            features=features
         )
     
     def _ml_classification(
