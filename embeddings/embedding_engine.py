@@ -150,7 +150,11 @@ class EmbeddingEngine:
         """Cleanup when the object is destroyed."""
         # Clean up OpenAI client if it was used
         if hasattr(self, '_get_embeddings') and self._get_embeddings == self._get_openai_embeddings:
+            # Force cleanup of API key
             openai.api_key = None
+            # Ensure the module-level API key is also cleared
+            if hasattr(openai, '_api_key'):
+                del openai._api_key
 
     def clear_cache(self):
         """Clear the embedding cache if it exists."""
@@ -258,14 +262,14 @@ class EmbeddingEngine:
                 with open(cache_file, 'r') as f:
                     cache = json.load(f)
             
-            # Update cache with new embeddings, respecting size limit
-            for text, embedding in zip(texts, embeddings):
-                cache[text] = embedding.tolist()
-                
-            # Remove oldest entries if cache exceeds size limit
-            if len(cache) > self.config.max_cache_size:
-                items = list(cache.items())
-                cache = dict(items[-self.config.max_cache_size:])
+            # Process embeddings in batches to maintain order
+            batch_dict = {text: embedding.tolist() for text, embedding in zip(texts, embeddings)}
+            
+            # Combine with existing cache and limit size
+            combined_items = list(cache.items()) + list(batch_dict.items())
+            if len(combined_items) > self.config.max_cache_size:
+                combined_items = combined_items[-self.config.max_cache_size:]
+            cache = dict(combined_items)
             
             # Save updated cache
             with open(cache_file, 'w') as f:
