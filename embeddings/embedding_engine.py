@@ -150,12 +150,11 @@ class EmbeddingEngine:
         """Cleanup when the object is destroyed."""
         # Clean up OpenAI client if it was used
         if hasattr(self, '_get_embeddings') and self._get_embeddings == self._get_openai_embeddings:
-            # Reset both instance and module level API keys
+            # Reset the API key
             openai.api_key = None
-            # Clear from the module
-            import sys
-            if 'openai' in sys.modules:
-                del sys.modules['openai'].api_key
+            # Ensure the module's API key is cleared
+            if hasattr(openai, 'api_key'):
+                setattr(openai, 'api_key', None)
 
     def clear_cache(self):
         """Clear the embedding cache if it exists."""
