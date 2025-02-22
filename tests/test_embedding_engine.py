@@ -4,6 +4,7 @@ from pathlib import Path
 import json
 import tempfile
 import os
+import openai
 from unittest.mock import patch, MagicMock
 from embeddings.embedding_engine import (
     EmbeddingEngine,
