@@ -154,7 +154,7 @@ class EmbeddingEngine:
             openai.api_key = None
             # Ensure the module-level API key is also cleared
             if hasattr(openai, '_api_key'):
-                del openai._api_key
+                del openai.api_key
 
     def clear_cache(self):
         """Clear the embedding cache if it exists."""
