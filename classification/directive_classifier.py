@@ -109,9 +109,19 @@ class DirectiveClassifier:
     
     def _initialize_similarity_classifier(self, embedding_dim: int):
         """Initialize the similarity-based classifier."""
-        # Load reference embeddings if provided
+        # Load reference embeddings if provided and file exists
         if self.config.reference_embeddings_path:
-            self._load_reference_embeddings()
+            try:
+                self._load_reference_embeddings()
+            except ValueError as e:
+                # If file doesn't exist yet, initialize with ones
+                if "No such file or directory" in str(e):
+                    if self.config.reference_directives is None:
+                        raise ValueError("reference_directives cannot be None")
+                    self.reference_embeddings = np.ones((len(self.config.reference_directives), embedding_dim))
+                    logger.warning("Reference embeddings file not found - initializing with ones vectors")
+                else:
+                    raise  # Re-raise other ValueError exceptions
         else:
             # Initialize with ones vectors for better similarity testing
             if self.config.reference_directives is None:
