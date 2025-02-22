@@ -151,7 +151,8 @@ class DirectiveClassifier:
             # Example: a file embedded in the source, or a small python dictionary
             # for demonstration, let's just build a small array of random floats
             # but in reality you'd store real “directive” embeddings.
-            fallback_size = len(self.config.reference_directives)
+            # We can safely use len() here because __post_init__ ensures reference_directives is always a list
+            fallback_size = len(self.config.reference_directives)  # type: ignore
             self.reference_embeddings = np.random.rand(fallback_size, embedding_dim).astype(np.float32)
             
             logger.warning(

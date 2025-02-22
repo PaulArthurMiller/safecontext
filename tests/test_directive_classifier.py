@@ -122,8 +122,12 @@ def test_classify_multiple_chunks(embedding_dim, sample_embeddings):
 def test_update_reference_embeddings(embedding_dim, sample_embeddings, tmp_path):
     """Test updating reference embeddings"""
     save_path = tmp_path / "new_embeddings.json"
-    config = ClassifierConfig(reference_embeddings_path=str(save_path))
-    classifier = DirectiveClassifier(config=config, embedding_dim=embedding_dim)
+        
+    # Initialize with default fallback first
+    classifier = DirectiveClassifier(embedding_dim=embedding_dim)
+        
+    # Then update the config and embeddings
+    classifier.config.reference_embeddings_path = str(save_path)
     
     # Update embeddings
     classifier.update_reference_embeddings(sample_embeddings)
