@@ -111,14 +111,7 @@ class DirectiveClassifier:
         """Initialize the similarity-based classifier."""
         # Load reference embeddings if provided
         if self.config.reference_embeddings_path:
-            try:
-                self._load_reference_embeddings()
-            except ValueError:
-                # If file doesn't exist yet, initialize with ones for better similarity testing
-                if self.config.reference_directives is None:
-                    raise ValueError("reference_directives cannot be None")
-                self.reference_embeddings = np.ones((len(self.config.reference_directives), embedding_dim))
-                logger.warning("Initializing with ones vectors - will be saved when updated")
+            self._load_reference_embeddings()
         else:
             # Initialize with ones vectors for better similarity testing
             if self.config.reference_directives is None:
