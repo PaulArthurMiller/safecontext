@@ -54,7 +54,7 @@ class ClassifierConfig:
     
     def __post_init__(self):
         """Initialize default reference directives if none provided."""
-        if self.reference_directives is None:
+        if not self.reference_directives:  # This handles both None and empty list
             self.reference_directives = [
                 "you must",
                 "it is required",
@@ -67,6 +67,9 @@ class ClassifierConfig:
                 "ensure that",
                 "do not"
             ]
+        # Ensure it's always a list, even if somehow set to None after __post_init__
+        if self.reference_directives is None:
+            self.reference_directives = []
 
 class DirectiveClassifier:
     """
