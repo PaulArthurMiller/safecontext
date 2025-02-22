@@ -263,13 +263,14 @@ class EmbeddingEngine:
                     cache = json.load(f)
             
             # Update cache with new embeddings
-            for text, embedding in zip(texts, embeddings):
-                cache[text] = embedding.tolist()
+            new_entries = {text: embedding.tolist() for text, embedding in zip(texts, embeddings)}
             
-            # Keep only the most recent entries if cache exceeds size limit
-            if len(cache) > self.config.max_cache_size:
-                items = list(cache.items())
-                cache = dict(items[-self.config.max_cache_size:])
+            # Combine with existing cache and limit size
+            all_items = list(cache.items()) + list(new_entries.items())
+            if len(all_items) > self.config.max_cache_size:
+                cache = dict(all_items[-self.config.max_cache_size:])
+            else:
+                cache.update(new_entries)
             
             # Save updated cache
             with open(cache_file, 'w') as f:

@@ -34,7 +34,11 @@ def mock_openai():
 def mock_sentence_transformer():
     with patch('embeddings.embedding_engine.SentenceTransformer') as mock:
         instance = MagicMock()
-        instance.encode.return_value = np.array([[0.1, 0.2, 0.3]])
+        instance.encode.return_value = np.array([
+            [0.1, 0.2, 0.3],
+            [0.4, 0.5, 0.6],
+            [0.7, 0.8, 0.9]
+        ])
         mock.return_value = instance
         yield mock
 
