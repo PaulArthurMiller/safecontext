@@ -196,4 +196,4 @@ def test_cleanup():
     with patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'}):
         engine = EmbeddingEngine(model_name="text-embedding-3-small")
         del engine
-        assert 'api_key' not in vars(engine)  # API key should be cleared
+        assert openai.api_key is None  # API key should be cleared
