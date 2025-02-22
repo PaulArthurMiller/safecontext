@@ -41,7 +41,7 @@ class EmbeddingConfig:
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
     max_retries: int = 3
     timeout: int = 30
-    max_cache_size: int = 10000  # Maximum number of entries in cache
+    max_cache_size: int = 2  # Maximum number of entries in cache
 
 class EmbeddingError(Exception):
     """Base exception for embedding-related errors."""
@@ -152,9 +152,9 @@ class EmbeddingEngine:
         if hasattr(self, '_get_embeddings') and self._get_embeddings == self._get_openai_embeddings:
             # Force cleanup of API key
             openai.api_key = None
-            # Ensure the module-level API key is also cleared
-            if hasattr(openai, '_api_key'):
-                del openai.api_key
+            # Reset the module-level API key
+            if hasattr(openai, 'api_key'):
+                delattr(openai, 'api_key')
 
     def clear_cache(self):
         """Clear the embedding cache if it exists."""
@@ -262,14 +262,14 @@ class EmbeddingEngine:
                 with open(cache_file, 'r') as f:
                     cache = json.load(f)
             
-            # Process embeddings in batches to maintain order
-            batch_dict = {text: embedding.tolist() for text, embedding in zip(texts, embeddings)}
+            # Update cache with new embeddings
+            for text, embedding in zip(texts, embeddings):
+                cache[text] = embedding.tolist()
             
-            # Combine with existing cache and limit size
-            combined_items = list(cache.items()) + list(batch_dict.items())
-            if len(combined_items) > self.config.max_cache_size:
-                combined_items = combined_items[-self.config.max_cache_size:]
-            cache = dict(combined_items)
+            # Keep only the most recent entries if cache exceeds size limit
+            if len(cache) > self.config.max_cache_size:
+                items = list(cache.items())
+                cache = dict(items[-self.config.max_cache_size:])
             
             # Save updated cache
             with open(cache_file, 'w') as f:
