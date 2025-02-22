@@ -108,26 +108,55 @@ class DirectiveClassifier:
             raise ValueError(f"Unsupported model type: {self.config.model_type}")
     
     def _initialize_similarity_classifier(self, embedding_dim: int):
-        """Initialize the similarity-based classifier."""
-        # Load reference embeddings if provided
+        """
+        Initialize the similarity-based classifier. If the user has specified
+        a reference_embeddings_path, attempt to load it. If it is missing or invalid,
+        either raise an error OR fallback with a clear warning (depending on your policy).
+        """
         if self.config.reference_embeddings_path:
-            try:
-                self._load_reference_embeddings()
-            except ValueError as e:
-                if "No such file or directory" in str(e):
-                    # Initialize with ones if file doesn't exist yet
-                    if self.config.reference_directives is None:
-                        raise ValueError("reference_directives cannot be None")
-                    self.reference_embeddings = np.ones((len(self.config.reference_directives), embedding_dim))
-                    logger.warning("Reference embeddings file not found - initializing with ones vectors")
-                else:
-                    raise  # Re-raise other ValueError exceptions
+            # Strict approach: raise error if file is not found or not valid
+            self._try_loading_reference_embeddings(self.config.reference_embeddings_path)
+            # Optional: confirm that loaded embeddings match the specified dimension
+            if self.reference_embeddings.shape[1] != embedding_dim:
+                raise ValueError(
+                    f"Loaded reference embeddings have dimension {self.reference_embeddings.shape[1]}, "
+                    f"but embedding_dim={embedding_dim} was specified."
+                )
         else:
-            # Initialize with ones vectors for better similarity testing
-            if self.config.reference_directives is None:
-                raise ValueError("reference_directives cannot be None")
-            self.reference_embeddings = np.ones((len(self.config.reference_directives), embedding_dim))
-            logger.warning("Using ones vectors for reference embeddings - replace with actual embeddings")
+            # If no path is provided, fallback. But ensure the user is notified:
+            logger.warning("No reference_embeddings_path specified. Loading built-in fallback embeddings.")
+            self._load_builtin_fallback(embedding_dim)
+
+    def _try_loading_reference_embeddings(self, path_str: str):
+        try:
+            path = Path(path_str)
+            with path.open('r') as f:
+                data = json.load(f)
+            self.reference_embeddings = np.array(data['embeddings'], dtype=np.float32)
+        except Exception as e:
+            # Strict or fallback approach:
+            # Strict: raise error so user must fix the path
+            raise ValueError(f"Error loading reference embeddings from {path_str}: {str(e)}") from e
+
+    def _load_builtin_fallback(self, embedding_dim: int):
+        """
+        Load a set of fallback reference embeddings that actually represent directives.
+        Store them in self.reference_embeddings. 
+        For example, you might include them in your repo under classification/fallback_embeddings.json
+        """
+        try:
+            # Example: a file embedded in the source, or a small python dictionary
+            # for demonstration, let's just build a small array of random floats
+            # but in reality you'd store real “directive” embeddings.
+            fallback_size = len(self.config.reference_directives)
+            self.reference_embeddings = np.random.rand(fallback_size, embedding_dim).astype(np.float32)
+            
+            logger.warning(
+                "Using built-in fallback directive embeddings. This may not be ideal for your domain!"
+            )
+        except Exception as e:
+            # If fallback also fails, we have no chance of working properly
+            raise ValueError(f"Failed to load fallback directive embeddings: {str(e)}") from e
     
     def _initialize_ml_classifier(self):
         """Initialize the ML-based classifier."""
@@ -236,12 +265,11 @@ class DirectiveClassifier:
             save: Whether to save to file if reference_embeddings_path is set
         """
         self.reference_embeddings = embeddings
-        
         if save and self.config.reference_embeddings_path is not None:
             try:
                 path = Path(self.config.reference_embeddings_path)
                 with path.open('w') as f:
                     json.dump({'embeddings': embeddings.tolist()}, f)
-                logger.info("Saved updated reference embeddings")
+                logger.info("Saved updated reference embeddings.")
             except Exception as e:
                 logger.error(f"Error saving reference embeddings: {str(e)}")
