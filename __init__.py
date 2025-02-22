@@ -1,0 +1,3 @@
+"""
+SafeContext package root.
+"""
