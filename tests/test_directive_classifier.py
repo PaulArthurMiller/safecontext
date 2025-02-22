@@ -27,12 +27,20 @@ def reference_embeddings_file():
     yield Path(f.name)
     Path(f.name).unlink()  # Cleanup after tests
 
-def test_classifier_initialization(embedding_dim):
-    """Test basic initialization of classifier"""
+def test_classifier_initialization(embedding_dim, caplog):
+    """Test basic initialization of classifier with fallback behavior"""
     classifier = DirectiveClassifier(embedding_dim=embedding_dim)
     assert classifier.config.model_type == "similarity"
     assert classifier.config.similarity_threshold == 0.6
     assert len(classifier.config.reference_directives) > 0
+    
+    # Verify warning about fallback embeddings
+    assert "No reference_embeddings_path specified" in caplog.text
+    assert "Using built-in fallback directive embeddings" in caplog.text
+    
+    # Verify fallback embeddings were created with correct shape
+    expected_size = len(classifier.config.reference_directives)
+    assert classifier.reference_embeddings.shape == (expected_size, embedding_dim)
 
 def test_classifier_initialization_no_embedding_dim():
     """Test initialization fails without embedding_dim"""
@@ -62,8 +70,29 @@ def test_reference_embeddings_loading(embedding_dim, reference_embeddings_file):
 def test_invalid_reference_embeddings_path(embedding_dim):
     """Test loading from invalid embeddings path"""
     config = ClassifierConfig(reference_embeddings_path="nonexistent.json")
-    with pytest.raises(ValueError, match="Error loading reference embeddings"):
+    with pytest.raises(ValueError, match="Error loading reference embeddings from nonexistent.json"):
         DirectiveClassifier(config=config, embedding_dim=embedding_dim)
+
+def test_custom_reference_directives(embedding_dim):
+    """Test initialization with custom reference directives"""
+    custom_directives = ["must do", "never allow", "always ensure"]
+    config = ClassifierConfig(reference_directives=custom_directives)
+    classifier = DirectiveClassifier(config=config, embedding_dim=embedding_dim)
+    
+    # Verify custom directives were used
+    assert classifier.config.reference_directives == custom_directives
+    # Verify fallback embeddings match custom directives length
+    assert classifier.reference_embeddings.shape == (len(custom_directives), embedding_dim)
+
+def test_empty_reference_directives(embedding_dim):
+    """Test initialization with empty reference directives list"""
+    config = ClassifierConfig(reference_directives=[])
+    classifier = DirectiveClassifier(config=config, embedding_dim=embedding_dim)
+    
+    # Verify default directives were loaded
+    assert len(classifier.config.reference_directives) > 0
+    # Verify fallback embeddings match default directives length
+    assert classifier.reference_embeddings.shape[0] == len(classifier.config.reference_directives)
 
 def test_classify_single_chunk(embedding_dim):
     """Test classification of a single chunk"""
