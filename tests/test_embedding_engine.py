@@ -196,5 +196,6 @@ def test_cleanup():
     """Test cleanup on deletion"""
     with patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'}):
         engine = EmbeddingEngine(model_name="text-embedding-3-small")
-        del engine
+        # Call cleanup directly instead of relying on __del__
+        engine.__del__()
         assert openai.api_key is None  # API key should be cleared
