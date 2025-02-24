@@ -16,7 +16,9 @@ And this is the final paragraph."""
 
 def test_init():
     chunker = TextChunker()
-    assert chunker.nlp == spacy.load("en_core_web_sm")
+    # Compare model names instead of objects
+    assert chunker.nlp.meta["lang"] == "en"
+    assert chunker.nlp.meta["name"] == "core_web_sm"
     assert hasattr(chunker, 'chunk_size')
     assert hasattr(chunker, 'chunk_overlap')
 
@@ -31,7 +33,7 @@ def test_invalid_strategy(chunker):
 
 def test_sentence_chunking(chunker, sample_text):
     chunks = chunker.chunk_text(sample_text, strategy='sentence')
-    assert len(chunks) == 7
+    assert len(chunks) == 6  # Text has 6 sentences
     assert all(isinstance(chunk, TextChunk) for chunk in chunks)
     assert chunks[0].text == "This is the first sentence."
     assert chunks[0].chunk_type == 'sentence'
@@ -80,7 +82,7 @@ def test_chunk_positions(chunker):
     
     # Verify positions are correct
     assert chunks[0].start_pos == 0
-    assert chunks[0].end_pos == text.find("Second")
+    assert chunks[0].end_pos == text.find("Second") - 1  # Account for space
     assert chunks[1].start_pos == text.find("Second")
     assert chunks[1].end_pos == len(text)
 

@@ -114,8 +114,11 @@ class TextChunker:
     def _fixed_size_chunks(self, text: str, chunk_size: int) -> Iterator[TextChunk]:
         """Generate fixed-size chunks with optional overlap."""
         text_length = len(text)
-        
-        for i in range(0, text_length, chunk_size - self.chunk_overlap):
+        if not text_length:
+            return
+            
+        i = 0
+        while i < text_length:
             chunk_end = min(i + chunk_size, text_length)
             chunk_text = text[i:chunk_end].strip()
             
@@ -129,6 +132,8 @@ class TextChunker:
             
             if chunk_end == text_length:
                 break
+                
+            i += chunk_size - self.chunk_overlap
 
     def merge_small_chunks(self, 
                           chunks: List[TextChunk], 
