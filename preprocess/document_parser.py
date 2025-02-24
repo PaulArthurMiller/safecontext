@@ -35,7 +35,7 @@ class DocumentParser:
     """
     
     def __init__(self):
-        self.supported_formats = config.preprocess.supported_formats
+        self.supported_formats = ['txt', 'pdf', 'html', 'htm', 'docx', 'json']
 
     def parse(self, input_source: Union[str, Path], format_hint: Optional[str] = None) -> str:
         """
@@ -87,7 +87,10 @@ class DocumentParser:
 
     def _parse_text(self, file) -> str:
         """Parse plain text files."""
-        return self._clean_text(file.read().decode('utf-8', errors='replace'))
+        content = file.read()
+        if isinstance(content, bytes):
+            content = content.decode('utf-8', errors='replace')
+        return self._clean_text(content)
 
     def _parse_pdf(self, file) -> str:
         """Parse PDF files."""
@@ -119,11 +122,11 @@ class DocumentParser:
 
     def _clean_text(self, text: str) -> str:
         """Clean and normalize text content."""
-        # Replace multiple newlines with single newline
-        text = '\n'.join(line.strip() for line in text.splitlines() if line.strip())
+        # Remove empty lines and normalize whitespace
+        lines = [line.strip() for line in text.splitlines() if line.strip()]
+        text = ' '.join(lines)
         # Replace multiple spaces with single space
-        text = ' '.join(text.split())
-        return text
+        return ' '.join(text.split())
 
 # Create a global instance for easy access
 parser = DocumentParser()

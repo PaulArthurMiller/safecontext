@@ -97,7 +97,7 @@ def test_parse_html(mock_file, parser, sample_html):
     assert "hidden" not in result
     assert "console.log" not in result
 
-@patch("builtins.open", new_callable=mock_open)
+@patch("builtins.open")
 def test_parse_docx(mock_file, parser):
     # Mock a DOCX document
     mock_doc = MagicMock()
@@ -105,7 +105,8 @@ def test_parse_docx(mock_file, parser):
         MagicMock(text="Paragraph 1"),
         MagicMock(text="Paragraph 2")
     ]
-    
+        
+    mock_file.return_value = BytesIO(b"fake docx content")
     with patch("docx.Document", return_value=mock_doc):
         result = parser._parse_file(Path("test.docx"))
         assert "Paragraph 1" in result
