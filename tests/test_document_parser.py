@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 from io import BytesIO
 from unittest.mock import mock_open, patch, MagicMock
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 from docx import Document
 from bs4 import BeautifulSoup
 
@@ -98,18 +98,25 @@ def test_parse_html(mock_file, parser, sample_html):
     assert "console.log" not in result
 
 def test_parse_docx(parser):
-    # Mock the Document class directly instead of trying to mock the file
+    # Create mock document content
     mock_doc = MagicMock()
     mock_doc.paragraphs = [
         MagicMock(text="Paragraph 1"),
         MagicMock(text="Paragraph 2")
     ]
-        
-    with patch("docx.Document", return_value=mock_doc) as mock_document:
-        with patch("builtins.open", mock_open(read_data=b"fake docx content")):
+
+    # Create a mock file that behaves like a ZIP file
+    mock_file = MagicMock()
+    mock_file.read = MagicMock(return_value=b"PK\x03\x04")  # ZIP magic number
+    mock_file.seek = MagicMock()
+    mock_file.tell = MagicMock(return_value=100)  # Fake file size
+
+    # Patch both the file open and Document creation
+    with patch("builtins.open", return_value=mock_file):
+        with patch("docx.Document", return_value=mock_doc) as mock_document:
             result = parser._parse_file(Path("test.docx"))
                 
-            # Verify the document was created
+            # Verify document was created
             mock_document.assert_called_once()
                 
             # Check content

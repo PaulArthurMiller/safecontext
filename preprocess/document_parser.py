@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 from typing import Union, Optional
 from bs4 import BeautifulSoup
-import PyPDF2
+from pypdf import PdfReader
 from docx import Document
 from safecontext.config import config
 from safecontext.utils.logger import SafeContextLogger
@@ -94,7 +94,7 @@ class DocumentParser:
 
     def _parse_pdf(self, file) -> str:
         """Parse PDF files."""
-        reader = PyPDF2.PdfReader(file)
+        reader = PdfReader(file)
         text = []
         for page in reader.pages:
             text.append(page.extract_text())
