@@ -12,8 +12,8 @@ from typing import Union, Optional
 from bs4 import BeautifulSoup
 import PyPDF2
 from docx import Document
-from ..config import config
-from utils.logger import SafeContextLogger
+from safecontext.config import config
+from safecontext.utils.logger import SafeContextLogger
 
 # Configure logging
 logger = SafeContextLogger(__name__)
