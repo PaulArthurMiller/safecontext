@@ -117,6 +117,9 @@ class TextChunker:
         if not text_length:
             return
             
+        # Ensure overlap is less than chunk_size to prevent infinite loops
+        effective_overlap = min(self.chunk_overlap, chunk_size - 1)
+        
         i = 0
         while i < text_length:
             chunk_end = min(i + chunk_size, text_length)
@@ -133,7 +136,8 @@ class TextChunker:
             if chunk_end == text_length:
                 break
                 
-            i += chunk_size - self.chunk_overlap
+            # Ensure forward progress
+            i += max(1, chunk_size - effective_overlap)
 
     def merge_small_chunks(self, 
                           chunks: List[TextChunk], 

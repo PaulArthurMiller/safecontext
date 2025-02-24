@@ -48,18 +48,27 @@ def test_paragraph_chunking(chunker, sample_text):
     assert chunks[0].chunk_type == 'paragraph'
 
 def test_fixed_size_chunking(chunker):
+    # Test basic fixed-size chunking
     text = "This is a test text that will be split into fixed-size chunks."
     chunks = chunker.chunk_text(text, strategy='fixed', max_chunk_size=20)
+    assert len(chunks) > 0
     assert all(len(chunk.text) <= 20 for chunk in chunks)
     assert chunks[0].chunk_type == 'fixed'
     
-    # Test overlap
+    # Test overlap with safety checks
     text = "abcdefghijklmnopqrstuvwxyz"
     chunker.chunk_overlap = 5
     chunks = chunker.chunk_text(text, strategy='fixed', max_chunk_size=10)
+    assert len(chunks) > 0  # Ensure we got some chunks
+    
     # Verify overlap exists between chunks
     for i in range(len(chunks)-1):
         assert chunks[i].text[-5:] in chunks[i+1].text
+        
+    # Test with overlap equal to chunk size (should not cause infinite loop)
+    chunker.chunk_overlap = 10
+    chunks = chunker.chunk_text(text, strategy='fixed', max_chunk_size=10)
+    assert len(chunks) > 0  # Should still produce chunks
 
 def test_merge_small_chunks(chunker):
     chunks = [
