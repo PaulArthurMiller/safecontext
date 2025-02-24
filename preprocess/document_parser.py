@@ -123,10 +123,10 @@ class DocumentParser:
     def _clean_text(self, text: str) -> str:
         """Clean and normalize text content."""
         # Remove empty lines and normalize whitespace
-        lines = [line.strip() for line in text.splitlines() if line.strip()]
+        lines = [line.strip().rstrip('.') for line in text.splitlines() if line.strip()]
         text = ' '.join(lines)
-        # Replace multiple spaces with single space
-        return ' '.join(text.split())
+        # Replace multiple spaces with single space and remove trailing period
+        return ' '.join(text.split()).rstrip('.')
 
 # Create a global instance for easy access
 parser = DocumentParser()
