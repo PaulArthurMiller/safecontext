@@ -105,12 +105,11 @@ def test_parse_docx(mock_file, parser):
         MagicMock(text="Paragraph 1"),
         MagicMock(text="Paragraph 2")
     ]
-    
-    # Create a mock file-like object that Document() can work with
-    mock_file_obj = MagicMock()
-    mock_file_obj.read = MagicMock(return_value=b"PK\x03\x04\x14\x00\x00\x00\x00\x00")  # Minimal ZIP header
+        
+    # Create a proper file-like object with seek support
+    mock_file_obj = BytesIO(b"PK\x03\x04\x14\x00\x00\x00\x00\x00")
     mock_file.return_value = mock_file_obj
-    
+        
     with patch("docx.Document", return_value=mock_doc):
         result = parser._parse_file(Path("test.docx"))
         assert "Paragraph 1" in result
