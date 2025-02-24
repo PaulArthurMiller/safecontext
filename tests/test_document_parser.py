@@ -97,23 +97,24 @@ def test_parse_html(mock_file, parser, sample_html):
     assert "hidden" not in result
     assert "console.log" not in result
 
-@patch("builtins.open")
-def test_parse_docx(mock_file, parser):
-    # Mock a DOCX document
+def test_parse_docx(parser):
+    # Mock the Document class directly instead of trying to mock the file
     mock_doc = MagicMock()
     mock_doc.paragraphs = [
         MagicMock(text="Paragraph 1"),
         MagicMock(text="Paragraph 2")
     ]
         
-    # Create a proper file-like object with seek support
-    mock_file_obj = BytesIO(b"PK\x03\x04\x14\x00\x00\x00\x00\x00")
-    mock_file.return_value = mock_file_obj
-        
-    with patch("docx.Document", return_value=mock_doc):
-        result = parser._parse_file(Path("test.docx"))
-        assert "Paragraph 1" in result
-        assert "Paragraph 2" in result
+    with patch("docx.Document", return_value=mock_doc) as mock_document:
+        with patch("builtins.open", mock_open(read_data=b"fake docx content")):
+            result = parser._parse_file(Path("test.docx"))
+                
+            # Verify the document was created
+            mock_document.assert_called_once()
+                
+            # Check content
+            assert "Paragraph 1" in result
+            assert "Paragraph 2" in result
 
 @patch("builtins.open", new_callable=mock_open)
 def test_parse_json(mock_file, parser):
