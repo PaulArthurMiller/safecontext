@@ -9,7 +9,7 @@ and semantic unit-based segmentation.
 from dataclasses import dataclass
 from typing import List, Optional, Iterator
 import spacy
-from ..config import config
+from safecontext.config import config
 from utils.logger import SafeContextLogger
 
 # Configure logging
