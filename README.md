@@ -58,8 +58,7 @@ cd SafeContext
 2. **Install via pip in editable mode**:
 
 ```bash
-Copy
-Edit
+
 pip install -e .
 ```
 
@@ -72,7 +71,7 @@ python -m venv venv
 source venv/bin/activate  # On macOS/Linux
 venv\Scripts\activate     # On Windows
 pip install -r requirements.txt
-
+```
 ---
 
 ## Quick Start
@@ -150,14 +149,14 @@ safecontext/
 ## Contribution
 We welcome community contributions! Here’s how to get started:
 
-1. **Check the Issues:** Look for help wanted or good first issue.
+1. **Check the Issues:** Look for `help wanted` or `good first issue`.
 2. **Fork** the repo & create a feature branch.
 3. **Add / Fix code & Add Tests** where needed.
 4. **Open a Pull Request** describing your change.
 
 Please see CONTRIBUTING.md for style guidelines and more details.
 
-Ways to Contribute
+### Ways to Contribute
 - Add new directive patterns or regexes for partial instructions.
 - Improve classification logic (ML-based approaches?).
 - Expand test coverage, bugfix, or performance tuning.
