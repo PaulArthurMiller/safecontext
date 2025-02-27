@@ -69,23 +69,26 @@ def test_parse_text_file(mock_file, parser):
     assert result == "Sample text content"
     mock_file.assert_called_once()
 
-@patch("builtins.open")
-def test_parse_pdf(mock_file, parser):
-    # Create a mock PDF content
+@patch.object(Path, "exists", return_value=True)
+@patch("preprocess.document_parser.open", new_callable=mock_open, read_data=b"Fake PDF bytes")
+@patch("preprocess.document_parser.PdfReader")
+def test_parse_pdf(mock_pdfreader, mock_file, mock_exists, parser):
+    # 1) Mock up the PdfReader instance
     mock_pdf = MagicMock()
     mock_pdf.pages = [
         MagicMock(extract_text=lambda: "Page 1 content"),
-        MagicMock(extract_text=lambda: "Page 2 content")
+        MagicMock(extract_text=lambda: "Page 2 content"),
     ]
-        
-    # Create a file-like object
-    mock_file_obj = BytesIO(b"%PDF-1.3\n")
-    mock_file.return_value = mock_file_obj
-        
-    with patch("pypdf.PdfReader", return_value=mock_pdf):
-        result = parser._parse_file(Path("test.pdf"))
-        assert "Page 1 content" in result
-        assert "Page 2 content" in result
+    mock_pdfreader.return_value = mock_pdf
+
+    # 2) Now call your parser
+    result = parser._parse_file(Path("test.pdf"))
+
+    # 3) Verify it worked
+    assert "Page 1 content" in result
+    assert "Page 2 content" in result
+    # And if you want to confirm open(...) was called with 'rb':
+    mock_file.assert_called_once_with(Path("test.pdf"), "rb")
 
 @patch("builtins.open", new_callable=mock_open)
 def test_parse_html(mock_file, parser, sample_html):
@@ -101,24 +104,25 @@ def test_parse_html(mock_file, parser, sample_html):
     assert "hidden" not in result
     assert "console.log" not in result
 
-def test_parse_docx(parser):
-    # Create mock document content
+@patch.object(Path, "exists", return_value=True)
+@patch("preprocess.document_parser.open", new_callable=mock_open, read_data=b"Fake docx bytes")
+@patch("preprocess.document_parser.Document")
+def test_parse_docx(mock_document_class, mock_file, mock_exists, parser):
+    # 1) Mock up the Document instance
     mock_doc = MagicMock()
     mock_doc.paragraphs = [
         MagicMock(text="Paragraph 1"),
-        MagicMock(text="Paragraph 2")
+        MagicMock(text="Paragraph 2"),
     ]
+    mock_document_class.return_value = mock_doc
 
-    # Create a minimal DOCX file structure in memory
-    docx_content = BytesIO()
-    docx_content.write(b"PK\x03\x04\x14\x00\x00\x00\x08\x00")  # ZIP header
-    docx_content.seek(0)
+    # 2) Call your parser
+    result = parser._parse_file(Path("test.docx"))
 
-    with patch("builtins.open", return_value=docx_content):
-        with patch("docx.Document", return_value=mock_doc):
-            result = parser._parse_file(Path("test.docx"))
-            assert "Paragraph 1" in result
-            assert "Paragraph 2" in result
+    # 3) Verify
+    assert "Paragraph 1" in result
+    assert "Paragraph 2" in result
+    mock_file.assert_called_once_with(Path("test.docx"), "rb")
 
 @patch("builtins.open", new_callable=mock_open)
 def test_parse_json(mock_file, parser):

@@ -2,3 +2,160 @@
 2025-02-19 18:24:07,140 - __main__ - WARNING - Directive confidence score is high
 2025-02-19 18:24:07,140 - __main__ - ERROR - Failed to classify text chunk
 2025-02-19 18:24:07,140 - __main__ - INFO - Decision: Sanitized text | Details: Removed directive elements from chunk 42
+2025-02-22 09:49:44,304 - classification.directive_classifier - WARNING - Using zero vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:49:44,380 - classification.directive_classifier - WARNING - Using zero vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:49:44,466 - classification.directive_classifier - WARNING - Using zero vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:49:44,955 - classification.directive_classifier - WARNING - Using zero vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:55:26,337 - classification.directive_classifier - WARNING - Using zero vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:55:26,387 - classification.directive_classifier - WARNING - Using zero vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:55:26,401 - classification.directive_classifier - WARNING - Using zero vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:55:26,927 - classification.directive_classifier - WARNING - Using zero vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:57:50,002 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:57:50,077 - classification.directive_classifier - WARNING - Initializing with ones vectors - will be saved when updated
+2025-02-22 09:57:50,453 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:57:50,461 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:57:50,498 - classification.directive_classifier - WARNING - Initializing with ones vectors - will be saved when updated
+2025-02-22 09:57:50,541 - classification.directive_classifier - INFO - Saved updated reference embeddings
+2025-02-22 09:57:50,596 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:58:40,692 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:58:40,834 - classification.directive_classifier - WARNING - Initializing with ones vectors - will be saved when updated
+2025-02-22 09:58:41,621 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:58:41,636 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:58:41,701 - classification.directive_classifier - WARNING - Initializing with ones vectors - will be saved when updated
+2025-02-22 09:58:41,733 - classification.directive_classifier - INFO - Saved updated reference embeddings
+2025-02-22 09:58:41,777 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:59:55,892 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:59:55,938 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:59:55,949 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 09:59:56,424 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:04:41,208 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:04:41,253 - classification.directive_classifier - WARNING - Reference embeddings file not found - initializing with ones vectors
+2025-02-22 10:04:41,820 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:04:41,832 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:04:41,852 - classification.directive_classifier - WARNING - Reference embeddings file not found - initializing with ones vectors
+2025-02-22 10:04:41,865 - classification.directive_classifier - INFO - Saved updated reference embeddings
+2025-02-22 10:04:41,892 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:08:22,074 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:08:22,117 - classification.directive_classifier - WARNING - Reference embeddings file not found - initializing with ones vectors
+2025-02-22 10:08:22,517 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:08:22,525 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:08:22,561 - classification.directive_classifier - WARNING - Reference embeddings file not found - initializing with ones vectors
+2025-02-22 10:08:22,569 - classification.directive_classifier - INFO - Saved updated reference embeddings
+2025-02-22 10:08:22,601 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:10:51,791 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:10:51,835 - classification.directive_classifier - WARNING - Reference embeddings file not found - initializing with ones vectors
+2025-02-22 10:10:52,241 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:10:52,251 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:10:52,284 - classification.directive_classifier - WARNING - Reference embeddings file not found - initializing with ones vectors
+2025-02-22 10:10:52,295 - classification.directive_classifier - INFO - Saved updated reference embeddings
+2025-02-22 10:10:52,328 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:24:22,318 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:24:22,372 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:24:22,377 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 10:24:22,919 - classification.directive_classifier - WARNING - Using ones vectors for reference embeddings - replace with actual embeddings
+2025-02-22 11:10:48,739 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:10:48,740 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:10:48,823 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:10:48,823 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:10:48,839 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:10:48,839 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:10:48,858 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:10:48,858 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:10:48,858 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:10:48,858 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:10:49,660 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:10:49,660 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:16:01,302 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:16:01,303 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:16:01,419 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:16:01,420 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:16:01,439 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:16:01,440 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:16:01,452 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:16:01,452 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:16:01,464 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:16:01,467 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:16:01,508 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:16:01,508 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:16:01,537 - classification.directive_classifier - INFO - Saved updated reference embeddings.
+2025-02-22 11:16:01,606 - classification.directive_classifier - WARNING - No reference_embeddings_path specified. Loading built-in fallback embeddings.
+2025-02-22 11:16:01,607 - classification.directive_classifier - WARNING - Using built-in fallback directive embeddings. This may not be ideal for your domain!
+2025-02-22 11:57:11,755 - embeddings.embedding_engine - INFO - Cache cleared successfully
+2025-02-22 11:57:11,755 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 11:57:11,755 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 11:57:11,774 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 11:57:11,775 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:01:50,526 - embeddings.embedding_engine - INFO - Cache cleared successfully
+2025-02-22 12:01:50,528 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:01:50,528 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:01:50,528 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:01:50,528 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:03:10,224 - embeddings.embedding_engine - INFO - Cache cleared successfully
+2025-02-22 12:03:10,226 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:03:10,226 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:03:10,234 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:03:10,235 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:12:37,778 - embeddings.embedding_engine - INFO - Cache cleared successfully
+2025-02-22 12:12:37,785 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:12:37,786 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:12:37,792 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:12:37,792 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:17:23,807 - embeddings.embedding_engine - INFO - Cache cleared successfully
+2025-02-22 12:17:23,807 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:17:23,807 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:17:23,807 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:17:23,823 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:19:57,561 - embeddings.embedding_engine - INFO - Cache cleared successfully
+2025-02-22 12:19:57,564 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:19:57,564 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:19:57,564 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:19:57,564 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:29:03,557 - embeddings.embedding_engine - INFO - Cache cleared successfully
+2025-02-22 12:29:03,568 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:29:03,568 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:29:03,576 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:29:03,576 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:53:21,895 - embeddings.embedding_engine - INFO - Cache cleared successfully
+2025-02-22 12:53:21,900 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:53:21,900 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-22 12:53:21,910 - embeddings.embedding_engine - WARNING - Retry 1/3 after error: API Error
+2025-02-22 12:53:21,910 - embeddings.embedding_engine - WARNING - Retry 2/3 after error: API Error
+2025-02-24 10:59:39,357 - pipeline - INFO - SafeContext pipeline initialized successfully
+2025-02-24 10:59:39,365 - pipeline - INFO - Chunking text
+2025-02-24 10:59:39,366 - pipeline - INFO - Generating embeddings
+2025-02-24 10:59:39,366 - pipeline - INFO - Classifying chunks
+2025-02-24 10:59:39,366 - pipeline - INFO - Sanitizing content
+2025-02-24 10:59:39,366 - pipeline - INFO - Processing completed successfully
+2025-02-24 10:59:39,873 - pipeline - INFO - SafeContext pipeline initialized successfully
+2025-02-24 10:59:39,873 - pipeline - INFO - Chunking text
+2025-02-24 10:59:39,873 - pipeline - ERROR - Pipeline processing failed: Chunking error
+2025-02-24 11:13:24,468 - pipeline - INFO - SafeContext pipeline initialized successfully
+2025-02-24 11:13:24,468 - pipeline - INFO - Parsing input file: fake_file.txt
+2025-02-24 11:13:24,468 - pipeline - INFO - Chunking text
+2025-02-24 11:13:24,468 - pipeline - INFO - Generating embeddings
+2025-02-24 11:13:24,476 - pipeline - INFO - Classifying chunks
+2025-02-24 11:13:24,476 - pipeline - INFO - Sanitizing content
+2025-02-24 11:13:24,476 - pipeline - INFO - Processing completed successfully
+2025-02-24 11:13:25,020 - pipeline - INFO - SafeContext pipeline initialized successfully
+2025-02-24 11:13:25,020 - pipeline - INFO - Chunking text
+2025-02-24 11:13:25,020 - pipeline - ERROR - Pipeline processing failed: Chunking error
+2025-02-24 11:21:17,375 - pipeline - INFO - SafeContext pipeline initialized successfully
+2025-02-24 11:21:17,375 - pipeline - INFO - Parsing input file: fake_file.txt
+2025-02-24 11:21:17,375 - pipeline - INFO - Chunking text
+2025-02-24 11:21:17,375 - pipeline - INFO - Generating embeddings
+2025-02-24 11:21:17,390 - pipeline - INFO - Classifying chunks
+2025-02-24 11:21:17,390 - pipeline - INFO - Sanitizing content
+2025-02-24 11:21:17,391 - pipeline - INFO - Processing completed successfully
+2025-02-24 11:21:17,691 - pipeline - INFO - SafeContext pipeline initialized successfully
+2025-02-24 11:21:17,691 - pipeline - INFO - Chunking text
+2025-02-24 11:21:17,691 - pipeline - ERROR - Pipeline processing failed: Chunking error
+2025-02-27 10:57:24,693 - pipeline - INFO - SafeContext pipeline initialized successfully
+2025-02-27 10:57:24,695 - pipeline - INFO - Parsing input file: fake_file.txt
+2025-02-27 10:57:24,696 - pipeline - INFO - Chunking text
+2025-02-27 10:57:24,696 - pipeline - INFO - Generating embeddings
+2025-02-27 10:57:24,696 - pipeline - INFO - Classifying chunks
+2025-02-27 10:57:24,696 - pipeline - INFO - Sanitizing content
+2025-02-27 10:57:24,697 - pipeline - INFO - Processing completed successfully
+2025-02-27 10:57:24,905 - pipeline - INFO - SafeContext pipeline initialized successfully
+2025-02-27 10:57:24,906 - pipeline - INFO - Chunking text
+2025-02-27 10:57:24,906 - pipeline - ERROR - Pipeline processing failed: Chunking error
